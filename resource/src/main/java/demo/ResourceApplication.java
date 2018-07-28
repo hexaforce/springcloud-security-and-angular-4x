@@ -2,9 +2,7 @@ package demo;
 
 import java.security.Principal;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.actuate.trace.TraceProperties;
@@ -59,67 +57,18 @@ public class ResourceApplication extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		// We need this to prevent the browser from popping up a dialog on a 401
-		http.httpBasic().disable().csrf()
-				.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
-		http.authorizeRequests().antMatchers(HttpMethod.POST, "/**").hasRole("WRITER")
-				.anyRequest().authenticated();
+		http.httpBasic().disable().csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
+		http.authorizeRequests().antMatchers(HttpMethod.POST, "/**").hasRole("WRITER").anyRequest().authenticated();
 	}
 
 	@Bean
-	public WebRequestTraceFilter webRequestLoggingFilter(ErrorAttributes errorAttributes,
-			TraceRepository traceRepository, TraceProperties traceProperties) {
-		WebRequestTraceFilter filter = new WebRequestTraceFilter(traceRepository,
-				traceProperties);
+	public WebRequestTraceFilter webRequestLoggingFilter(ErrorAttributes errorAttributes, TraceRepository traceRepository, TraceProperties traceProperties) {
+		WebRequestTraceFilter filter = new WebRequestTraceFilter(traceRepository, traceProperties);
 		if (errorAttributes != null) {
 			filter.setErrorAttributes(errorAttributes);
 		}
 		filter.setOrder(SecurityProperties.DEFAULT_FILTER_ORDER - 1);
 		return filter;
 	}
-}
 
-class Message {
-	private String id = UUID.randomUUID().toString();
-	private String content;
-
-	Message() {
-	}
-
-	public Message(String content) {
-		this.content = content;
-	}
-
-	public String getId() {
-		return id;
-	}
-
-	public String getContent() {
-		return content;
-	}
-}
-
-class Change {
-	private Date timestamp = new Date();
-	private String user;
-	private String message;
-
-	Change() {
-	}
-
-	public Change(String user, String message) {
-		this.user = user;
-		this.message = message;
-	}
-
-	public Date getTimestamp() {
-		return timestamp;
-	}
-
-	public String getUser() {
-		return user;
-	}
-
-	public String getMessage() {
-		return message;
-	}
 }

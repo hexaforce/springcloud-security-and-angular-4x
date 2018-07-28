@@ -13,7 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment=WebEnvironment.RANDOM_PORT)
+@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 public class ApplicationTests {
 
 	@LocalServerPort
@@ -23,8 +23,7 @@ public class ApplicationTests {
 
 	@Test
 	public void homePageLoads() {
-		ResponseEntity<String> response = template.getForEntity("http://localhost:"
-				+ port + "/", String.class);
+		ResponseEntity<String> response = template.getForEntity("http://localhost:" + port + "/", String.class);
 		assertEquals(HttpStatus.OK, response.getStatusCode());
 	}
 
