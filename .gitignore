@@ -6,8 +6,9 @@
 /out-tsc
 
 # dependencies
-/node
-/node_modules
+/target/
+/node_modules/
+/node/
 package-lock.json
 
 # IDEs and editors
